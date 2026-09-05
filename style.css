@@ -157,7 +157,8 @@ header {
 
     box-shadow: 0 22px 45px rgba(185, 141, 82, .35);
 }
-.story {
+.story,
+.preview-story {
     max-width: 950px;
 
     margin: 100px auto;
