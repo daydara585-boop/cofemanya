@@ -1,376 +1,1119 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-:root{
-
-    --coffee:#5d4037;
-    --coffee-dark:#3e2723;
-    --cream:#faf6f1;
-    --milk:#fffaf5;
-    --gold:#b98d52;
-    --text:#43352e;
-    --glass:rgba(255,250,245,.72);
-
+:root {
+    --coffee: #5d4037;
+    --coffee-dark: #3e2723;
+    --cream: #faf6f1;
+    --milk: #fffaf5;
+    --gold: #b98d52;
+    --text: #43352e;
+    --glass: rgba(255, 250, 245, .72);
 }
 
-html{
-
-    scroll-behavior:smooth;
-
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-
-    font-family:'Nunito',sans-serif;
-    background:var(--cream);
-    color:var(--text);
-
+body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
 }
 
-.hero{
+.hidden {
+    display: none;
+}
 
-    min-height:100vh;
+/* ---------- Главная страница ---------- */
+
+.hero {
+    min-height: 100vh;
 
     background-image:
-    linear-gradient(rgba(255,248,242,.35),rgba(255,248,242,.55)),
-    url("images/background.png");
+        linear-gradient(
+            rgba(255, 248, 242, .35),
+            rgba(255, 248, 242, .55)
+        ),
+        url("images/background.png");
 
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    padding:40px;
-
+    padding: 40px;
 }
 
-.overlay{
+.overlay {
+    max-width: 620px;
 
-    max-width:620px;
+    background: var(--glass);
+    backdrop-filter: blur(8px);
 
-    background:var(--glass);
+    border-radius: 28px;
+    padding: 45px;
 
-    backdrop-filter:blur(8px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
 
-    border-radius:28px;
-
-    padding:45px;
-
-    box-shadow:0 20px 60px rgba(0,0,0,.15);
-
-    text-align:center;
-
+    text-align: center;
 }
 
-header{
+header {
+    position: fixed;
 
-    position:fixed;
+    top: 0;
+    left: 0;
 
-    top:0;
-    left:0;
+    width: 100%;
 
-    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    display:flex;
+    padding: 24px 45px;
 
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:24px 45px;
-
-    z-index:100;
-
+    z-index: 1000;
 }
 
-.logo{
-
-    font-family:'Cormorant Garamond',serif;
-
-    font-size:38px;
-
-    font-weight:600;
-
-    color:var(--coffee-dark);
-
+.logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 600;
+    color: var(--coffee-dark);
 }
 
-.login{
+.login {
+    border: none;
+    background: white;
 
-    border:none;
+    padding: 12px 28px;
 
-    background:white;
+    border-radius: 40px;
 
-    padding:12px 28px;
+    cursor: pointer;
+    font-size: 16px;
 
-    border-radius:40px;
-
-    cursor:pointer;
-
-    font-size:16px;
-
-    transition:.3s;
-
-}
-.login:hover{
-
-    background:var(--gold);
-    color:white;
-
-    transform:translateY(-2px);
-
+    transition: .3s;
 }
 
-.hero h1{
-
-    font-family:'Cormorant Garamond',serif;
-
-    font-size:72px;
-
-    color:var(--coffee-dark);
-
-    margin-bottom:20px;
-
-    line-height:1.1;
-
+.login:hover {
+    background: var(--gold);
+    color: white;
+    transform: translateY(-2px);
 }
 
-.subtitle{
+.hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    color: var(--coffee-dark);
 
-    font-size:28px;
-
-    color:var(--coffee);
-
-    margin-bottom:24px;
-
+    margin-bottom: 20px;
+    line-height: 1.1;
 }
 
-.text{
-
-    font-size:20px;
-
-    line-height:1.8;
-
-    margin-bottom:38px;
-
+.subtitle {
+    font-size: 28px;
+    color: var(--coffee);
+    margin-bottom: 24px;
 }
 
-.coffee-button{
-
-    border:none;
-
-    background:var(--coffee);
-
-    color:white;
-
-    padding:18px 42px;
-
-    border-radius:50px;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-    transition:.35s;
-
-    box-shadow:0 15px 35px rgba(93,64,55,.28);
-
+.text {
+    font-size: 20px;
+    line-height: 1.8;
+    margin-bottom: 38px;
 }
 
-.coffee-button:hover{
+/* ---------- Кнопки ---------- */
 
-    background:var(--gold);
+.coffee-button {
+    border: none;
 
-    transform:translateY(-3px);
+    background: var(--coffee);
+    color: white;
 
-    box-shadow:0 22px 45px rgba(185,141,82,.35);
+    padding: 18px 42px;
 
+    border-radius: 50px;
+
+    font-size: 18px;
+    cursor: pointer;
+
+    transition: .35s;
+
+    box-shadow: 0 15px 35px rgba(93, 64, 55, .28);
 }
 
-.story{
+.coffee-button:hover {
+    background: var(--gold);
 
-    max-width:950px;
+    transform: translateY(-3px);
 
-    margin:100px auto;
+    box-shadow: 0 22px 45px rgba(185, 141, 82, .35);
+}
+.story {
+    max-width: 950px;
 
-    background:white;
+    margin: 100px auto;
 
-    padding:60px;
+    background: white;
 
-    border-radius:30px;
+    padding: 60px;
 
-    box-shadow:0 20px 60px rgba(0,0,0,.08);
+    border-radius: 30px;
 
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
 }
 
-.story h2{
+.story h2 {
+    font-family: 'Cormorant Garamond', serif;
 
-    font-family:'Cormorant Garamond',serif;
+    font-size: 46px;
 
-    font-size:46px;
+    color: var(--coffee-dark);
 
-    color:var(--coffee-dark);
+    margin-bottom: 22px;
 
-    margin-bottom:22px;
-
-    text-align:center;
-
+    text-align: center;
 }
 
-.story p{
+.story p {
+    max-width: 760px;
 
-    line-height:1.9;
+    margin: 0 auto 38px;
 
-    font-size:19px;
+    line-height: 1.9;
 
-    text-align:center;
+    font-size: 19px;
 
-    margin-bottom:38px;
-
+    text-align: center;
 }
 
-.story textarea{
+.story textarea {
+    width: 100%;
 
-    width:100%;
+    min-height: 220px;
 
-    min-height:220px;
+    border: none;
 
-    border:none;
+    background: var(--milk);
 
-    background:var(--milk);
+    border-radius: 24px;
 
-    border-radius:24px;
+    padding: 24px;
 
-    padding:24px;
+    resize: vertical;
 
-    resize:vertical;
+    font-size: 17px;
 
-    font-size:17px;
+    outline: none;
 
-    outline:none;
-
-    margin-bottom:28px;
-
+    margin-bottom: 28px;
 }
+
 .photo,
-.publish{
+.publish {
+    display: block;
 
-    display:block;
+    margin: 18px auto;
 
-    margin:18px auto;
+    border: none;
 
-    border:none;
+    border-radius: 40px;
 
-    border-radius:40px;
+    padding: 16px 34px;
 
-    padding:16px 34px;
+    font-size: 17px;
 
-    font-size:17px;
+    cursor: pointer;
 
-    cursor:pointer;
-
-    transition:.35s;
-
+    transition: .35s;
 }
 
-.photo{
-
-    background:#efe7df;
-
-    color:var(--coffee);
-
+.photo {
+    background: #efe7df;
+    color: var(--coffee);
 }
 
-.photo:hover{
-
-    background:#e4d7ca;
-
+.photo:hover {
+    background: #e4d7ca;
 }
 
-.publish{
+.publish {
+    background: var(--coffee);
 
-    background:var(--coffee);
+    color: white;
 
-    color:white;
+    margin-top: 28px;
 
-    margin-top:28px;
-
-    box-shadow:0 15px 35px rgba(93,64,55,.22);
-
+    box-shadow: 0 15px 35px rgba(93, 64, 55, .22);
 }
 
-.publish:hover{
+.publish:hover {
+    background: var(--gold);
+    transform: translateY(-3px);
+}
+.coffee-home {
+    min-height: 100vh;
 
-    background:var(--gold);
+    background:
+        linear-gradient(
+            rgba(40, 25, 20, .55),
+            rgba(40, 25, 20, .55)
+        ),
+        url("images/women-collage.jpg");
 
-    transform:translateY(-3px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px;
 }
 
-footer{
+.coffee-card {
+    width: 100%;
+    max-width: 650px;
 
-    text-align:center;
+    background: rgba(255, 250, 247, .93);
 
-    padding:45px;
+    border-radius: 30px;
 
-    font-size:22px;
+    padding: 55px;
 
-    color:var(--coffee);
+    text-align: center;
 
-    font-family:'Cormorant Garamond',serif;
+    backdrop-filter: blur(8px);
 
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .18);
 }
 
-@media(max-width:900px){
+.coffee-card h1 {
+    font-family: "Cormorant Garamond", serif;
 
-header{
+    font-size: 54px;
 
-padding:20px;
+    color: #5f4036;
 
+    margin-bottom: 25px;
 }
 
-.logo{
+.welcome-text {
+    font-size: 22px;
 
-font-size:30px;
+    line-height: 1.8;
 
+    color: #70564c;
+
+    margin-bottom: 40px;
 }
 
-.hero h1{
+.coffee-buttons {
+    display: flex;
 
-font-size:52px;
+    flex-direction: column;
 
+    gap: 18px;
 }
 
-.subtitle{
+.continue-link {
+    display: inline-block;
 
-font-size:22px;
+    margin-top: 25px;
 
+    color: #8b5a4c;
+
+    font-weight: 600;
+
+    text-decoration: none;
 }
 
-.story{
+.continue-link:hover {
+    color: #b37a67;
+}
+.coffee-card {
+    opacity: 0;
 
-margin:60px 20px;
+    transform: translateY(18px);
 
-padding:35px;
-
+    animation:
+        cardAppear 1.2s ease 1.2s forwards;
 }
 
-.story h2{
+.coffee-card h1 {
+    opacity: 0;
 
-font-size:36px;
+    transform: translateY(15px);
 
+    animation:
+        textAppear 1s ease 1.5s forwards;
 }
 
-.story p{
+.coffee-card .welcome-text {
+    opacity: 0;
 
-font-size:17px;
+    transform: translateY(15px);
 
+    animation:
+        textAppear 1s ease 2.4s forwards;
 }
 
+.coffee-card .coffee-buttons {
+    opacity: 0;
+
+    transform: translateY(15px);
+
+    animation:
+        textAppear 1s ease 3.4s forwards;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes textAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@media (max-width: 900px) {
+
+    header {
+        padding: 18px 20px;
+    }
+
+    .logo {
+        font-size: 30px;
+    }
+
+    .login {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+
+    .hero {
+        padding: 25px 18px;
+    }
+
+    .overlay {
+        padding: 32px 22px;
+    }
+
+    .hero h1 {
+        font-size: 52px;
+    }
+
+    .subtitle {
+        font-size: 22px;
+    }
+
+    .text {
+        font-size: 18px;
+    }
+
+    .coffee-home {
+        padding: 25px 16px;
+    }
+
+    .coffee-card {
+        max-width: 100%;
+        padding: 38px 24px;
+        border-radius: 26px;
+    }
+
+    .coffee-card h1 {
+        font-size: 42px;
+        line-height: 1.15;
+    }
+
+    .welcome-text {
+        font-size: 19px;
+        line-height: 1.75;
+        margin-bottom: 32px;
+    }
+
+    .coffee-button {
+        width: 100%;
+        padding: 16px 20px;
+        font-size: 17px;
+    }
+
+    .story {
+        margin: 50px 16px;
+        padding: 35px 24px;
+        border-radius: 26px;
+    }
+
+    .story h2 {
+        font-size: 36px;
+        line-height: 1.2;
+    }
+
+    .story p {
+        max-width: 100%;
+        padding: 0 4px;
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .story textarea {
+        padding: 20px;
+    }
+}
+/* ---------- Фиксированная вывеска ---------- */
+
+.coffee-logo {
+    position: fixed;
+
+    top: 22px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 1000;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 34px;
+    font-weight: 600;
+
+    color: white;
+
+    text-shadow:
+        0 2px 12px rgba(0, 0, 0, .35);
+
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+
+    .coffee-logo {
+        top: 16px;
+        font-size: 28px;
+        white-space: nowrap;
+    }
+}
+/* ---------- Финальные настройки ---------- */
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+textarea::placeholder {
+    color: #9b857b;
+}
+
+@media (max-width: 600px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .coffee-home {
+        min-height: 100svh;
+    }
+
+    .coffee-card {
+        margin-top: 20px;
+    }
+
+    .story {
+        width: calc(100% - 32px);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .story p {
+        overflow-wrap: break-word;
+    }
+
+    .story textarea {
+        max-width: 100%;
+    }
+}
+
+/* ---------- Подвал ---------- */
+
+footer {
+    text-align: center;
+
+    padding: 45px;
+
+    font-size: 22px;
+
+    color: var(--coffee);
+
+    font-family: 'Cormorant Garamond', serif;
+}
+.coffee-logo {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 1000;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 34px;
+    font-weight: 600;
+
+    color: white;
+
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .4);
+
+    pointer-events: none;
+}
+
+.story-card {
+    max-width: 760px;
+    margin: 0 auto;
+
+    padding: 30px 35px;
+
+    text-align: center;
+}
+
+.story-card h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 32px;
+
+    color: var(--coffee-dark);
+
+    margin-bottom: 18px;
+}
+
+.story-card p {
+    max-width: 620px;
+    margin: 0 auto;
+
+    line-height: 1.8;
+    font-size: 18px;
+
+    text-align: center;
+}
+.secret-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+.photo-preview {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+
+    margin: 10px auto 25px;
+    max-width: 800px;
+}
+
+.preview-image {
+    width: 150px;
+    height: 150px;
+
+    object-fit: cover;
+    border-radius: 18px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+}
+.photo-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+    margin: 10px 0 30px;
+}
+
+.photo-item {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.remove-photo {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(62,39,35,.82);
+    color: white;
+
+    font-size: 16px;
+    line-height: 30px;
+    padding: 0;
+
+    cursor: pointer;
+    transition: .25s;
+}
+
+.remove-photo:hover {
+    background: var(--gold);
+    transform: scale(1.08);
+}
+.user-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 18px;
+    color: #6b4638;
+}
+.story-photo {
+    width: 100%;
+    max-width: 140px;
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: 18px;
+    margin: 14px auto;
+    display: block;
+}
+.photo-preview {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.photo-preview-image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+}
+.photo-preview-item {
+    position: relative;
+    display: inline-block;
+}
+
+.photo-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+
+    width: 28px;
+    height: 28px;
+
+    border: none;
+    border-radius: 50%;
+
+    font-size: 20px;
+    line-height: 28px;
+
+    cursor: pointer;
+}
+/* ===== КАРТОЧКИ ИСТОРИЙ ===== */
+
+#storiesContainer {
+    width: 100%;
+    max-width: 850px;
+    margin: 30px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+#storiesContainer .story-card {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 28px 32px;
+
+    background: rgba(255, 255, 255, 0.78);
+    border-radius: 24px;
+
+    box-shadow:
+        0 10px 30px rgba(75, 50, 40, 0.08);
+
+    text-align: left;
+}
+
+#storiesContainer .story-content {
+    margin: 0;
+
+    font-size: 18px;
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+#storiesContainer .story-photo {
+    width: 100%;
+    max-width: 140px;
+    max-height: 140px;
+
+    object-fit: cover;
+
+    border-radius: 18px;
+
+    margin: 20px auto;
+    display: block;
+}
+
+#storiesContainer .story-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+#storiesContainer .story-edit,
+#storiesContainer .story-delete {
+    border: none;
+    border-radius: 20px;
+
+    padding: 8px 14px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+#storiesContainer .story-edit {
+    background: #eee5df;
+}
+
+#storiesContainer .story-delete {
+    background: #f3e1df;
+}
+
+@media (max-width: 600px) {
+
+    #storiesContainer {
+        gap: 16px;
+    }
+
+    #storiesContainer .story-card {
+        padding: 20px 18px;
+        border-radius: 18px;
+    }
+
+    #storiesContainer .story-content {
+        font-size: 16px;
+    }
+
+    #storiesContainer .story-actions {
+        justify-content: center;
+    }
+}
+#storiesContainer .story-card {
+    background: #f3e8df;
+    border: 1px solid rgba(91, 62, 50, 0.10);
+
+    box-shadow:
+        0 8px 24px rgba(74, 49, 38, 0.08);
+}
+
+#storiesContainer .story-edit,
+#storiesContainer .story-delete {
+    background: transparent;
+    color: #6b4c3f;
+
+    border: 1px solid rgba(107, 76, 63, 0.28);
+    border-radius: 20px;
+
+    padding: 7px 16px;
+}
+
+#storiesContainer .story-edit:hover,
+#storiesContainer .story-delete:hover {
+    background: #e7d5c8;
+}
+#storiesContainer .story-card {
+  background: #fff4cc;
+border: 1px solid #eadba4;
+
+    box-shadow:
+        0 10px 26px rgba(75, 48, 38, 0.10);
+}
+
+#storiesContainer .story-edit,
+#storiesContainer .story-delete {
+    background: #76564b;
+    color: #fffaf7;
+
+    border: none;
+    border-radius: 20px;
+
+    padding: 8px 18px;
+}
+
+#storiesContainer .story-edit:hover,
+#storiesContainer .story-delete:hover {
+    background: #5f433a;
+}
+/* ===== ТРЕТЬЯ СТРАНИЦА ===== */
+
+.secret-page {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+/* Поиск */
+.stories-search {
+    width: 100%;
+    max-width: 650px;
+    margin: 25px auto;
+}
+
+#story-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 18px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    border: 1px solid #d8c8bb;
+    border-radius: 22px;
+    outline: none;
+}
+
+/* Форма создания карточки */
+.secret-create-card {
+    width: 100%;
+    max-width: 650px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.secret-create-card input[type="text"],
+.secret-create-card textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+
+    margin: 12px 0;
+    padding: 14px 18px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    border: 1px solid #d8c8bb;
+    border-radius: 18px;
+    outline: none;
+}
+
+.secret-create-card textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* Кнопка фото — НЕ на всю страницу 😄 */
+.secret-create-card .photo {
+    display: inline-block;
+    width: auto;
+
+    margin: 10px auto;
+    padding: 10px 18px;
+
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Добавить карточку */
+#add-secret-card {
+    display: block;
+    width: auto;
+    min-width: 190px;
+
+    margin: 14px auto;
+    padding: 11px 22px;
+}
+
+@media (max-width: 600px) {
+
+    .secret-page {
+        padding: 20px 14px;
+    }
+
+    .stories-search,
+    .secret-create-card {
+        max-width: 100%;
+    }
+
+    #story-search,
+    .secret-create-card input[type="text"],
+    .secret-create-card textarea {
+        font-size: 16px;
+    }
+}
+/* ===== РЕЗУЛЬТАТЫ ПОИСКА НА ТАЙНОЙ СТРАНИЦЕ ===== */
+
+.secret-page #stories-list {
+    width: 100%;
+    max-width: 650px;
+    margin: 35px auto 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.secret-page #stories-list .story-card {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 24px 28px;
+
+   background: #eaf6fb;
+border: 1px solid #c7e1ec;
+    border-radius: 22px;
+
+    box-shadow: 0 8px 24px rgba(75, 50, 40, 0.08);
+
+    text-align: left;
+}
+
+.secret-page #stories-list .story-card h2 {
+    margin: 0 0 12px;
+
+    font-size: 21px;
+    color: #4d352d;
+}
+
+.secret-page #stories-list .story-card p {
+    margin: 0;
+
+    font-size: 17px;
+    line-height: 1.65;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.secret-page .no-results {
+    text-align: center;
+    padding: 25px;
+}
+.secret-my-cards {
+    text-align: center;
+    margin: 18px auto 30px;
+}
+
+#my-secret-cards {
+    display: inline-block;
+    width: auto;
+    min-width: 190px;
+    margin: 0 auto;
+    padding: 11px 22px;
+}
+/* Текст карточек на третьей странице */
+
+.secret-page #stories-list .story-card {
+    text-align: left;
+}
+
+.secret-page #stories-list .story-card h2 {
+    margin: 0 0 10px 0;
+    text-align: left;
+}
+
+.secret-page #stories-list .story-card p {
+    margin: 0 0 18px 0;
+    text-align: left;
+    width: 100%;
+}
+
+.secret-page #stories-list .story-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 16px;
+}
+#secret-photo-preview {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+}
+
+.secret-photo-preview-image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+}
+.secret-page #stories-list .story-card img.secret-card-photo {
+    width: 140px !important;
+height: 140px !important;
+    max-width: 100% !important;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+    margin: 16px 0;
+}
+.secret-photos-preview {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+}
+#secret-photo-preview,
+#secret-photo2-preview {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+.secret-card-photos {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 0;
+}
+.story-author {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 12px;
+    opacity: 0.75;
 }

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -22,15 +24,7 @@
 
 </div>
 
-<button class="login">
-
-Войти
-
-</button>
-
 </header>
-
-
 
 <section class="hero">
 
@@ -52,57 +46,70 @@
 
 </p>
 
-<button class="coffee-button">
+<a href="coffee.html" class="coffee-button">
 
 Войти в кофейню
 
-</button>
+</a>
 
 </div>
 
 </section>
 
-
-
-<section class="story">
+<section class="preview-story">
 
 <h2>
 
-🌿 История одной девушки
+История одной чашечки кофе ☕
 
 </h2>
 
 <p>
 
-В какой-то момент жизни мне казалось, что Бог забыл обо мне и нет смысла в жизни.
+В какой-то момент жизни мне казалось,
 
-Я много плакала по ночам, и горькая обида жгла моё горло.
+что Бог забыл обо мне.
 
-Но однажды произошло событие, которое перевернуло всё моё сердце...
+Я много плакала по ночам,
 
-Я решила всё рассказать маме.
+а горькая обида жгла моё горло.
+
+Казалось,
+
+что впереди уже не будет ничего светлого...
+
+Пока однажды не произошло событие,
+
+которое перевернуло всё моё сердце.
 
 </p>
 
-<button class="coffee-button">
+<a href="coffee.html" class="continue-link">
 
-☕ Войти в кофейню и читать продолжение
+Продолжение ждёт тебя в кофейне →
 
-</button>
+</a>
 
 </section>
-
-
 <footer>
 
 Пусть сердце каждой прекрасной цветёт ✨
 
 </footer>
 
-
-
 <script src="script.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = 'https://qjokxrjavmxfwtsrvmzh.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_QuiV_fH8xLvdOcjJCeB3nQ_B5dK7zjm';
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+</script>
 </body>
 
 </html>

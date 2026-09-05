@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Кофейня | Cofeмания</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+   
+    <section class="coffee-home">
+
+        <div class="coffee-card">
+           
+            <div id="user-name" class="user-name"></div>
+
+            <h1>Устала, звёздочка? ✨</h1>
+           
+                        <p class="welcome-text">
+                Оставайся...
+                <br><br>
+                Давай выпьем по чашечке кофе
+                и поговорим о хорошем.
+            </p>
+
+            <div class="coffee-buttons">
+
+                <button class="coffee-button" id="readStories">
+                    📖 Читать истории
+                </button>
+                           
+<div id="my-invites" class="my-invites hidden">
+</div>
+
+                <button class="coffee-button" id="writeStory">
+                    ✍ Написать свою
+                </button>
+
+                <button class="coffee-button" id="showInvites">
+    🎁 Пригласить подругу
+</button>
+<button class="coffee-button" id="logoutButton">
+    🚪 Выйти
+</button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="story hidden" id="stories">
+
+        <h2>
+            Истории, которые согревают ☕
+        </h2>
+
+        <div id="storiesContainer"></div>
+
+    </section>
+
+    <section class="story" id="write">
+
+        <h2>
+           Оставить лучик души можно <a href="secret.html" class="secret-link">здесь</a>✨
+        </h2>
+
+        <p>
+            Расскажите удивительную историю из своей жизни,
+            что подарило вам счастье,
+            как вы нашли себя,
+            каких прекрасных людей встретили,
+            что вдохновляет вас творить добро,
+            или что пожелали бы себе будущей,
+            участницам и всему миру.
+        </p>
+
+        <textarea
+    id="storyText"
+    placeholder="Напишите свою историю..."
+></textarea>
+        <div class="photo-preview" id="photoPreview"></div>
+
+        <label class="photo">
+    📷 Добавить (до 2 фото)
+    <input
+        type="file"
+        id="storyPhotos"
+        accept="image/*"
+        multiple
+        hidden
+    >
+</label>
+
+       <button class="publish" id="publishStory">
+    Опубликовать
+</button>
+
+<p id="publishMessage"></p>
+
+    </section>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = 'https://qjokxrjavmxfwtsrvmzh.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_QuiV_fH8xLvdOcjJCeB3nQ_B5dK7zjm';
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+  
+ const logoutButton =
+  document.getElementById('logoutButton');
+
+logoutButton.addEventListener('click', async () => {
+
+  const { error } =
+    await supabaseClient.auth.signOut();
+
+  if (error) {
+    console.error('Ошибка выхода:', error);
+    return;
+  }
+
+  window.location.href = 'register.html';
+});
+
+  (async () => {
+        const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError) {
+      console.error('Ошибка получения пользователя:', userError);
+      return;
+    }
+
+    if (!user) {
+      console.log('Пользователь не вошёл');
+      return;
+    }
+
+    const { data: member, error: memberError } =
+      await supabaseClient
+        .from('members')
+        .select('display_name')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+    if (memberError) {
+      console.error('Ошибка загрузки профиля:', memberError);
+      return;
+    }
+
+    if (member) {
+      document.getElementById('user-name').textContent =
+        member.display_name || '';
+    }
+    const invitesElement = document.getElementById('my-invites');
+const showInvitesButton = document.getElementById('showInvites');
+
+const { data: invites, error: invitesError } =
+  await supabaseClient
+    .from('invites')
+    .select('code')
+    .eq('created_by', user.id)
+    .eq('active', true)
+    .order('id', { ascending: true });
+
+if (invitesError) {
+  console.error('Ошибка загрузки приглашений:', invitesError);
+} else if (invites && invites.length > 0) {
+
+  invitesElement.innerHTML = invites
+    .map(invite =>
+      `<div class="invite-code">${invite.code}</div>`
+    )
+    .join('');
+
+}
+
+showInvitesButton.addEventListener('click', () => {
+
+  invitesElement.classList.toggle('hidden');
+
+  if (invitesElement.classList.contains('hidden')) {
+    showInvitesButton.textContent = '🎁 Пригласить подругу';
+  } else {
+    showInvitesButton.textContent = '✕ Скрыть приглашения';
+  }
+
+});
+const storyPhotos =
+  document.getElementById('storyPhotos');
+
+const photoPreview =
+  document.getElementById('photoPreview');
+
+let selectedPhotos = [];
+
+storyPhotos.addEventListener('change', () => {
+
+  const files = Array.from(storyPhotos.files);
+
+  if (files.length > 2) {
+    alert('Можно выбрать максимум 2 фотографии 📷');
+    storyPhotos.value = '';
+    selectedPhotos = [];
+    photoPreview.innerHTML = '';
+    return;
+  }
+
+  selectedPhotos = files;
+  photoPreview.innerHTML = '';
+
+  selectedPhotos.forEach((file, index) => {
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'photo-preview-item';
+
+  const img = document.createElement('img');
+
+  img.src = URL.createObjectURL(file);
+  img.className = 'photo-preview-image';
+
+  const removeButton = document.createElement('button');
+  removeButton.type = 'button';
+  removeButton.className = 'photo-remove';
+  removeButton.textContent = '×';
+
+  removeButton.addEventListener('click', () => {
+    selectedPhotos.splice(index, 1);
+
+    const dataTransfer = new DataTransfer();
+
+    selectedPhotos.forEach(photo => {
+      dataTransfer.items.add(photo);
+    });
+
+    storyPhotos.files = dataTransfer.files;
+
+    wrapper.remove();
+  });
+
+  wrapper.appendChild(img);
+  wrapper.appendChild(removeButton);
+
+  photoPreview.appendChild(wrapper);
+});
+});
+const storyText =
+  document.getElementById('storyText');
+
+const publishStory =
+  document.getElementById('publishStory');
+
+const publishMessage =
+  document.getElementById('publishMessage');
+  let editingStoryId = null;
+  let editingPhoto1 = null;
+let editingPhoto2 = null;
+
+publishStory.addEventListener('click', async () => {
+
+  const content = storyText.value.trim();
+
+  if (!content) {
+    publishMessage.textContent =
+      'Сначала напиши свою историю ✨';
+    return;
+  }
+
+  publishMessage.textContent =
+    'Публикуем...';
+
+ let photo1Url =
+  editingStoryId ? editingPhoto1 : null;
+
+let photo2Url =
+  editingStoryId ? editingPhoto2 : null;
+
+  // Загружаем выбранные фотографии
+  for (let i = 0; i < selectedPhotos.length; i++) {
+
+    const file = selectedPhotos[i];
+
+    const fileExtension =
+      file.name.split('.').pop();
+
+    const fileName =
+      `${user.id}/${Date.now()}-${i}.${fileExtension}`;
+
+    const { error: uploadError } =
+      await supabaseClient.storage
+        .from('story-photos')
+        .upload(fileName, file);
+
+    if (uploadError) {
+      console.error(
+        'Ошибка загрузки фото:',
+        uploadError
+      );
+
+      publishMessage.textContent =
+        'Не удалось загрузить фотографию.';
+      return;
+    }
+
+   if (i === 0) {
+  photo1Url = fileName;
+}
+
+if (i === 1) {
+  photo2Url = fileName;
+}
+  }
+
+  // Сохраняем историю в таблицу
+ let storyError;
+
+if (editingStoryId) {
+
+  const result =
+    await supabaseClient
+      .from('stories')
+      .update({
+        content: content,
+        photo1: photo1Url,
+        photo2: photo2Url
+      })
+      .eq('id', editingStoryId)
+      .eq('user_id', user.id);
+
+  storyError = result.error;
+
+} else {
+
+  const result =
+    await supabaseClient
+      .from('stories')
+      .insert({
+        content: content,
+        user_id: user.id,
+        photo1: photo1Url,
+        photo2: photo2Url
+      });
+
+  storyError = result.error;
+}
+
+  if (storyError) {
+    console.error(
+      'Ошибка публикации истории:',
+      storyError
+    );
+
+    publishMessage.textContent =
+      'Не удалось опубликовать историю.';
+    return;
+  }
+
+  storyText.value = '';
+  storyPhotos.value = '';
+  selectedPhotos = [];
+  photoPreview.innerHTML = '';
+
+editingStoryId = null;
+editingPhoto1 = null;
+editingPhoto2 = null;
+publishStory.textContent = 'Опубликовать';
+
+  publishMessage.textContent =
+    'История опубликована ❤️';
+
+  await loadStories();
+  document.getElementById('stories').classList.remove('hidden');
+
+document.getElementById('stories').scrollIntoView({
+  behavior: 'smooth'
+});
+});
+const storiesContainer =
+  document.getElementById('storiesContainer');
+
+const readStoriesButton =
+  document.getElementById('readStories');
+
+async function loadStories() {
+
+  storiesContainer.innerHTML =
+    '<p>Загружаем истории... ☕</p>';
+
+  const { data: storiesData, error: storiesError } =
+    await supabaseClient
+      .from('stories')
+      .select('id, content, created_at, user_id, photo1, photo2')
+      .order('created_at', { ascending: false });
+      const authorIds =
+  [...new Set(storiesData.map(story => story.user_id))];
+
+const { data: authors, error: authorsError } =
+  await supabaseClient
+    .from('members')
+    .select('user_id, display_name')
+    .in('user_id', authorIds);
+
+  if (storiesError) {
+    console.error(
+      'Ошибка загрузки историй:',
+      storiesError
+    );
+
+    storiesContainer.innerHTML =
+      '<p>Не удалось загрузить истории.</p>';
+
+    return;
+  }
+
+  if (!storiesData || storiesData.length === 0) {
+    storiesContainer.innerHTML =
+      '<p>Пока историй нет. Будь первой ✨</p>';
+
+    return;
+  }
+
+for (const story of storiesData) {
+
+  story.photo1Signed = null;
+  story.photo2Signed = null;
+
+ if (story.photo1) {
+
+  const photo1Path = story.photo1.includes('/story-photos/')
+    ? story.photo1.split('/story-photos/')[1]
+    : story.photo1;
+
+  const { data } =
+    await supabaseClient.storage
+      .from('story-photos')
+      .createSignedUrl(photo1Path, 3600);
+
+  story.photo1Signed =
+    data?.signedUrl || null;
+}
+
+  if (story.photo2) {
+    const { data } =
+      await supabaseClient.storage
+        .from('story-photos')
+        .createSignedUrl(story.photo2, 3600);
+
+    story.photo2Signed =
+      data?.signedUrl || null;
+  }
+}
+ storiesContainer.innerHTML = storiesData
+  .map(story => {
+    const author =
+      authors?.find(item => item.user_id === story.user_id);
+
+    const authorName =
+      author?.display_name || 'Участница';
+
+    return `
+    <div class="story-card" data-story-id="${story.id}">
+
+      <div class="story-author">${authorName}</div>
+
+      <p class="story-content">${story.content}</p>
+
+      ${story.photo1Signed ? `
+        <img
+          src="${story.photo1Signed}"
+          class="story-photo"
+          alt="Фото к истории"
+        >
+      ` : ''}
+
+      ${story.photo2Signed ? `
+        <img
+          src="${story.photo2Signed}"
+          class="story-photo"
+          alt="Фото к истории"
+        >
+      ` : ''}
+
+      ${story.user_id === user.id ? `
+        <div class="story-actions">
+
+          <button
+            class="story-edit"
+            data-id="${story.id}">
+             Изменить
+          </button>
+
+          <button
+            class="story-delete"
+            data-id="${story.id}">
+            Удалить
+          </button>
+
+        </div>
+      ` : ''}
+
+    </div>
+  `;
+})
+.join('');
+  const deleteButtons =
+  storiesContainer.querySelectorAll('.story-delete');
+
+deleteButtons.forEach(button => {
+
+  button.addEventListener('click', async () => {
+
+    const storyId = button.dataset.id;
+
+    const confirmed =
+      confirm('Удалить эту историю?');
+
+    if (!confirmed) {
+      return;
+    }
+
+    const { error } =
+      await supabaseClient
+        .from('stories')
+        .delete()
+        .eq('id', storyId)
+        .eq('user_id', user.id);
+
+    if (error) {
+      console.error(
+        'Ошибка удаления истории:',
+        error
+      );
+      return;
+    }
+
+    await loadStories();
+  });
+});
+
+const editButtons =
+  storiesContainer.querySelectorAll('.story-edit');
+
+editButtons.forEach(button => {
+
+  button.addEventListener('click', () => {
+
+    const storyId = Number(button.dataset.id);
+
+    const story =
+      storiesData.find(item => item.id === storyId);
+
+    if (!story) {
+      return;
+    }
+
+    editingStoryId = story.id;
+    editingPhoto1 = story.photo1;
+editingPhoto2 = story.photo2;
+
+    storyText.value = story.content;
+    photoPreview.innerHTML = '';
+
+if (story.photo1Signed) {
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'photo-preview-item';
+
+  const img = document.createElement('img');
+  img.src = story.photo1Signed;
+  img.className = 'photo-preview-image';
+
+  const removeButton = document.createElement('button');
+  removeButton.type = 'button';
+  removeButton.className = 'photo-remove';
+  removeButton.textContent = '×';
+
+  removeButton.addEventListener('click', () => {
+    wrapper.remove();
+    story.photo1 = null;
+  });
+
+  wrapper.appendChild(img);
+  wrapper.appendChild(removeButton);
+
+  photoPreview.appendChild(wrapper);
+}
+
+if (story.photo2Signed) {
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'photo-preview-item';
+
+  const img = document.createElement('img');
+  img.src = story.photo2Signed;
+  img.className = 'photo-preview-image';
+
+  wrapper.appendChild(img);
+  photoPreview.appendChild(wrapper);
+}
+
+    publishStory.textContent =
+      'Сохранить изменения';
+
+    publishMessage.textContent =
+      'Редактируем историю ✏️';
+
+    document.getElementById('write').scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
+}
+readStoriesButton.addEventListener(
+  'click',
+  async () => {
+    document
+      .getElementById('stories')
+      .classList.remove('hidden');
+
+    await loadStories();
+  }
+);
+  })();
+  
+</script>
+<script src="script.js?v=2"></script>
+
+</body>
+
+</html>
