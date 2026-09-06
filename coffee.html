@@ -139,12 +139,7 @@ logoutButton.addEventListener('click', async () => {
       error: userError
     } = await supabaseClient.auth.getUser();
 
-    if (userError) {
-      console.error('Ошибка получения пользователя:', userError);
-      return;
-    }
-
-  if (!user) {
+    if (userError || !user) {
   window.location.href = 'register.html';
   return;
 }
