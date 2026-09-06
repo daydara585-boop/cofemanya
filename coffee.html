@@ -144,11 +144,10 @@ logoutButton.addEventListener('click', async () => {
       return;
     }
 
-    if (!user) {
-      console.log('Пользователь не вошёл');
-      return;
-    }
-
+  if (!user) {
+  window.location.href = 'register.html';
+  return;
+}
     const { data: member, error: memberError } =
       await supabaseClient
         .from('members')
